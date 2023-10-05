@@ -27,9 +27,15 @@ api = Api(
     ]
 )
 table = api.table("appxBfSaIMlRGrhBZ", "tbltJNGPYAGz8IIOh")  # base ID, table ID
+records = table.all()  # gets a list of dictionaries, where every dictionary is a record
 
 
 class Profile:
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+
+for record in records:
+    new_record = Profile(record)  # make a Profile type from user-submitted information
+    # probably will need logic here to run the greenhouse bot on the record

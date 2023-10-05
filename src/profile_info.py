@@ -1,4 +1,4 @@
-PROFILE_INFO = {
+PROFILES = {
     "first_name": "John",
     "last_name": "Smith",
     "email": "johnsmith@uni.edu",
@@ -17,3 +17,10 @@ PROFILE_INFO = {
     "most_recent_employer": "University",
     "reason_of_interest": "Having honed my skills in various software projects, I believe in the power of code to drive transformative change, and I am always eager to contribute to environments that champion creativity and problem-solving."
 }
+
+class Profile:
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+

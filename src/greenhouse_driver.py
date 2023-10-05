@@ -53,9 +53,9 @@ class GreenHouseDriver:
             self.github
         )  # for github
 
-        self.driver.find_element(
-            By.CLASS_NAME, "unstyled-button link-button"
-        ).send_keys("/resume" + self.id + ".pdf")
+        self.driver.find_element(By.CLASS_NAME, "drop-zone").send_keys(
+            "/resume" + self.id + ".pdf"
+        )
         # self.driver.find_element(By.ID, "job_application_answers_attributes_3_boolean_value").contextClick("Yes" if self.current_auth else "No")  # for current authorization in the US
 
         # for answering drop down question

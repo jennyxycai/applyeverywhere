@@ -32,13 +32,19 @@ class Profile:  # make Profile class
             "Graduation Date"
         ]  # need to figure out how to input a date into greenhouse
         self.expertise = fields["Experience Level"]
+        self.location = fields["Location"]
+        self.github = fields["GitHub Profile"]
+        self.current_auth = fields[
+            "Do you currently have authorization to work in the US?"
+        ]
+        self.visa_sponsor = fields[
+            "Do you now or will you in the future require visa sponsorship to work in the US?"
+        ]
 
         self.cover_letter = fields["Cover Letter"]
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
         open("resumes/" + self.id + ".pdf", "wb").write(r.content)
-        self.resume = fields[
-            "Resume"
-        ]  # downloads the resume file and saves it in resumes folder
+        self.resume = "resumes/" + self.id + ".pdf"  # link to resume
 
     def __str__(self):
         attributes = []

@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from profile_info import Profile
+from selenium.webdriver.common.action_chains import ActionChains
 from profile_info import list_of_profiles
 import os
 
@@ -31,9 +32,60 @@ class GreenHouseDriver:
 
     def fill_application_fields(self):
         # Fill in the information fields
+        # rona says: filled in the attributes for Sentry but this is not going to work for the other apps
         self.driver.find_element(By.ID, "first_name").send_keys(self.first_name)
         self.driver.find_element(By.ID, "last_name").send_keys(self.last_name)
         self.driver.find_element(By.ID, "email").send_keys(self.email)
+        self.driver.find_element(By.ID, "phone").send_keys(self.phone_number)
+        # self.driver.find_element(By.ID, "job_application_location").send_keys(
+        #   self.location
+        # )
+        self.driver.find_element(
+            By.ID, "job_application_answers_attributes_0_text_value"
+        ).send_keys(
+            self.linkedin
+        )  # for linkedin
+
+        self.driver.find_element(
+            By.ID, "job_application_answers_attributes_2_text_value"
+        ).send_keys(
+            self.github
+        )  # for github
+
+        # self.driver.find_element(By.ID, "job_application_answers_attributes_3_boolean_value").contextClick("Yes" if self.current_auth else "No")  # for current authorization in the US
+
+        # for answering drop down question
+        actions = ActionChains(self.driver)
+        if self.current_auth:
+            elementLocator = self.driver.find_element(
+                By.ID, "s2id_job_application_answers_attributes_3_boolean_value"
+            )
+            actions.click(on_element=elementLocator).send_keys(
+                Keys.ARROW_DOWN
+            ).send_keys(Keys.ENTER).perform()
+        else:  # not authorized
+            elementLocator = self.driver.find_element(
+                By.ID, "s2id_job_application_answers_attributes_3_boolean_value"
+            )
+            actions.click(on_element=elementLocator).send_keys(
+                Keys.ARROW_DOWN
+            ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+
+        if self.visa_sponsor:
+            elementLocator = self.driver.find_element(
+                By.ID, "s2id_job_application_answers_attributes_4_boolean_value"
+            )
+            actions.click(on_element=elementLocator).send_keys(
+                Keys.ARROW_DOWN
+            ).send_keys(Keys.ENTER).perform()
+        else:  # does not require visa sponsorship
+            elementLocator = self.driver.find_element(
+                By.ID, "s2id_job_application_answers_attributes_4_boolean_value"
+            )
+            actions.click(on_element=elementLocator).send_keys(
+                Keys.ARROW_DOWN
+            ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+
         while True:
             pass
 
@@ -52,4 +104,4 @@ for profile in list_of_profiles:
 
     for app_url in APPLICATION_URLS:
         gd.open_application_url(app_url)
-        # gd.fill_application_fields()
+        gd.fill_application_fields()

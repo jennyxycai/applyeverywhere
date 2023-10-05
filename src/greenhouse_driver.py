@@ -86,6 +86,24 @@ class GreenHouseDriver:
                 Keys.ARROW_DOWN
             ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
 
+        # can you relocate to SF?
+        elementLocator = self.driver.find_element(
+            By.ID,
+            "s2id_job_application_answers_attributes_6_boolean_value",
+        )
+        actions.click(on_element=elementLocator).send_keys(Keys.ARROW_DOWN).send_keys(
+            Keys.ENTER
+        ).perform()
+
+        # accept the Sentry privacy policy
+        elementLocator = self.driver.find_element(
+            By.ID,
+            "s2id_job_application_answers_attributes_7_answer_selected_options_attributes_7_question_option_id",
+        )
+        actions.click(on_element=elementLocator).send_keys(Keys.ARROW_DOWN).send_keys(
+            Keys.ENTER
+        ).perform()
+
         while True:
             pass
 

@@ -1,7 +1,7 @@
 PROFILE_INFO = {
-    "first_name": "Jane",
-    "last_name": "Doe",
-    "email": "janedoe@uni.edu",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "johnsmith@uni.edu",
     "phone": "415-555-8190",
     "org": "University",
     "resume": "/resume.pdf",

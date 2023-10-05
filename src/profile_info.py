@@ -1,7 +1,7 @@
 import os
 from pyairtable import Api
 
-PROFILES = {
+"""PROFILES = {
     "first_name": "John",
     "last_name": "Smith",
     "email": "johnsmith@uni.edu",
@@ -19,7 +19,7 @@ PROFILES = {
     "university": "University, USA",
     "most_recent_employer": "University",
     "reason_of_interest": "Having honed my skills in various software projects, I believe in the power of code to drive transformative change, and I am always eager to contribute to environments that champion creativity and problem-solving.",
-}
+}"""
 
 api = Api(
     os.environ[
@@ -36,6 +36,9 @@ class Profile:
             setattr(self, key, value)
 
 
+
+
 for record in records:
+    print(record)
     new_record = Profile(record)  # make a Profile type from user-submitted information
     # probably will need logic here to run the greenhouse bot on the record

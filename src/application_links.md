@@ -1,20 +1,14 @@
-1. No accounts req'd:
+1. No accounts req'd, no additional SAs:
 https://www.oldmissioncapital.com/careers/?gh_jid=5643831003
-
 https://boards.greenhouse.io/drweng/jobs/5138660
 https://boards.greenhouse.io/drweng/jobs/5152775
-
 https://www.ixl.com/company/careers/apply?gh_jid=6843329002&gh_src=e358d0722,%209ab9c2a12
 https://optiver.com/working-at-optiver/career-opportunities/6837072002
-
 https://www.janestreet.com/join-jane-street/apply/6834646002/
-
 https://akunacapital.com/job-details?gh_jid=5136022
 https://akunacapital.com/job-details?gh_jid=5097583
 https://akunacapital.com/job-details?gh_jid=5083320
-
 https://boards.greenhouse.io/sentry/jobs/5193895
-
 https://www.databricks.com/company/careers/university-recruiting/software-engineer---new-grad-2024-start-6865698002?gh_jid=6865698002&gh_src=62a881d62
 https://www.databricks.com/company/careers/university-recruiting/software-engineer---new-grad-2024-start-6866540002
 https://www.databricks.com/company/careers/university-recruiting/software-engineer---new-grad-2024-start-6866542002
@@ -38,6 +32,7 @@ https://jobs.lever.co/verkada/fdcdeb21-18b0-4aeb-8501-8892f04c0508/apply
 https://jobs.lever.co/verkada/3018dfbe-b567-4a42-a46a-3f6a06b01716
 https://jobs.netflix.com/jobs/291980521
 https://jobs.lever.co/anyscale/2888fb5f-3489-46c0-b776-2a02004ce21b/apply
+
 
 2. No accounts req'd, additional short answers required:
 https://www.geckorobotics.com/careers/apply?gh_jid=5695200003&gh_src=2f1f94f93us 

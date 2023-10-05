@@ -3,6 +3,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import Chrome
+
 
 # Set the path to the webdriver executable (e.g., chromedriver)
 driver_path = '/Users/jennycai/Desktop/chromedriver_mac64'

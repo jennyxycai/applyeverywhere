@@ -37,8 +37,7 @@ class Profile:
 
 
 
-
+# TODO: Rona, can you fix the for loop below so that record is a list/dict of kev/value pairs, and can populate the Profile class? thank you :)
 for record in records:
-    print(record)
     new_record = Profile(record)  # make a Profile type from user-submitted information
     # probably will need logic here to run the greenhouse bot on the record

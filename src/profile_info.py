@@ -3,27 +3,67 @@ import requests
 # Replace with your Airtable API information
 base_id = "appxBfSaIMlRGrhBZ"
 table_name = "tbltJNGPYAGz8IIOh"
-api_key = "patGVfkDXNA8c54m9.2cbd2d736cdfcfa3c2c73aee4ed6761f2085916f908d3f803213cdcf58a62a7e"
+api_key = (
+    "patGVfkDXNA8c54m9.2cbd2d736cdfcfa3c2c73aee4ed6761f2085916f908d3f803213cdcf58a62a7e"
+)
 
 # Define the Airtable API endpoint URL
-url = f'https://api.airtable.com/v0/{base_id}/{table_name}'
+url = f"https://api.airtable.com/v0/{base_id}/{table_name}"
 
 # Set up the headers with your API key
 headers = {
-    'Authorization': f'Bearer {api_key}',
+    "Authorization": f"Bearer {api_key}",
 }
 
 # Send a GET request to retrieve data from the Airtable table
-response = requests.get(url, headers=headers)
 
+
+class Profile:  # make Profile class
+    def __init__(self, record):
+        fields = record["fields"]
+        self.id = record["id"]
+        self.first_name = fields["First Name"]
+        self.last_name = fields["Last Name"]
+        self.phone_number = fields["Phone Number"]
+        self.email = fields["Email"]
+        self.organization = fields["Organization"]
+        self.linkedin = fields["LinkedIn Profile"]
+        self.graduation_date = fields[
+            "Graduation Date"
+        ]  # need to figure out how to input a date into greenhouse
+        self.expertise = fields["Experience Level"]
+
+        self.cover_letter = fields["Cover Letter"]
+        r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
+        open("resumes/" + self.id + ".pdf", "wb").write(r.content)
+        self.resume = fields[
+            "Resume"
+        ]  # downloads the resume file and saves it in resumes folder
+
+    def __str__(self):
+        attributes = []
+        for key, value in self.__dict__.items():
+            attributes.append((key, value))
+        return ", ".join([f"{key}: {value}" for key, value in attributes])
+
+
+response = requests.get(url, headers=headers)
 if response.status_code == 200:
     data = response.json()
     # Process and work with the retrieved data here
     print(data)
+    table = data["records"]
+    list_of_profiles = []
+    for id in table:
+        print(id)
+        list_of_profiles.append(
+            Profile(id)
+        )  # for every record, make a new Profile instance and add it to the list of profiles
 else:
     print(f"Error: {response.status_code}")
 
-'''
+
+"""
 import os
 from pyairtable import Api
 
@@ -73,4 +113,4 @@ for record in records:
     new_record = Profile(record)  # make a Profile type from user-submitted information
     # probably will need logic here to run the greenhouse bot on the record
 
-'''
+"""

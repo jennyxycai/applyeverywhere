@@ -42,15 +42,18 @@ class Profile:  # make Profile class
         self.visa_sponsor = fields[
             "Do you now or will you in the future require visa sponsorship to work in the US?"
         ]
+        self.gpa = fields["GPA"]
 
         self.cover_letter = fields["Cover Letter"]
 
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
-        #print(r.content)
-        with open(os.path.abspath(os.curdir)+"/src/resumes/" + self.id + ".pdf", "wb") as pdf_file:
+        # print(r.content)
+        with open(
+            os.path.abspath(os.curdir) + "/resumes/" + self.id + ".pdf", "wb"
+        ) as pdf_file:
             pdf_file.write(response.content)
-        
-        #open("resumes/" + self.id + ".pdf", "wb").write(r.content)
+
+        # open("resumes/" + self.id + ".pdf", "wb").write(r.content)
         self.resume = "resumes/" + self.id + ".pdf"  # link to resume
 
     def __str__(self):
@@ -77,4 +80,3 @@ if response.status_code == 200:
         )  # for every record, make a new Profile instance and add it to the list of profiles
 else:
     print(f"Error: {response.status_code}")
-

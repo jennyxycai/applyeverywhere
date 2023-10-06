@@ -10,9 +10,10 @@ import time
 # from profile_info import list_of_profiles
 
 APPLICATION_URLS = [
-    #"https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
+    # "https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
     "https://boards.greenhouse.io/sentry/jobs/5193895",
 ]
+
 
 class GreenHouseDriver:
     def __init__(self, profile=None):
@@ -34,34 +35,37 @@ class GreenHouseDriver:
     def fill_basic_fields(self, url):
         try:
             self.driver.find_element(By.ID, "first_name").send_keys(
-                'john')  # send_keys(self.first_name)
+                "john"
+            )  # send_keys(self.first_name)
         except:
             pass
 
         try:
             self.driver.find_element(By.ID, "last_name").send_keys(
-                'smith')  # send_keys(self.last_name)
+                "smith"
+            )  # send_keys(self.last_name)
         except:
             pass
         try:
             self.driver.find_element(By.ID, "email").send_keys(
-                'john@gmail.com')  # send_keys(self.email)
+                "john@gmail.com"
+            )  # send_keys(self.email)
         except:
             pass
         try:
             self.driver.find_element(By.ID, "phone").send_keys(
-                '55555555')  # .send_keys(self.phone_number)
+                "55555555"
+            )  # .send_keys(self.phone_number)
         except:
-            print(f'No phone field in {url}')
+            print(f"No phone field in {url}")
             pass
 
     def fill_autocomplete_fields(self, url):
         # add Location
         try:
-            location_field = self.driver.find_element(
-                By.ID, 'job_application_location')
+            location_field = self.driver.find_element(By.ID, "job_application_location")
             if location_field:
-                location_field.find_element(By.ID, 'auto_complete_input').send_keys(
+                location_field.find_element(By.ID, "auto_complete_input").send_keys(
                     "Cambridge, Massachusetts"  # self.location
                 ).send_keys(Keys.ARROW_DOWN, Keys.ENTER).perform()
 
@@ -86,8 +90,7 @@ class GreenHouseDriver:
                 "Massachusetts Institute of Technology"  # self.organization
             ).perform()
             time.sleep(1)  # give the school search time
-            actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN,
-                              Keys.ENTER).perform()
+            actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER).perform()
         except NoSuchElementException:
             print(f"No school field in {url}")
             pass
@@ -97,15 +100,12 @@ class GreenHouseDriver:
             degree_elem = self.driver.find_element(
                 By.XPATH, "//label[contains(.,'Degree')]"
             )
-            degree_elem = self.driver.find_element(
-                By.ID, "s2id_education_degree_0"
-            )
+            degree_elem = self.driver.find_element(By.ID, "s2id_education_degree_0")
             actions.click(on_element=degree_elem).send_keys(
                 "Bachelor"  # self.expertise
             ).perform()
             time.sleep(1)  # give the degree search time
-            actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN,
-                              Keys.ENTER).perform()
+            actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER).perform()
         except:
             print(f"No degree field in {url}")
             pass
@@ -115,11 +115,15 @@ class GreenHouseDriver:
             end_date_elem = self.driver.find_element(
                 By.XPATH, "//label[contains(.,'End Date')]"
             )
-            month_input = end_date_elem.find_element(By.XPATH, "//input[contains(@name, 'month')]").send_keys(
-                '06',  # self.graduation_date.split()[0]
+            month_input = end_date_elem.find_element(
+                By.XPATH, "//input[contains(@name, 'month')]"
+            ).send_keys(
+                "06",  # self.graduation_date.split()[0]
             )
-            year_input = end_date_elem.find_element(By.XPATH, "//input[contains(@name, 'year')]").send_keys(
-                '2024',  # self.graduation_date.split()[1]
+            year_input = end_date_elem.find_element(
+                By.XPATH, "//input[contains(@name, 'year')]"
+            ).send_keys(
+                "2024",  # self.graduation_date.split()[1]
             )
         except:
             pass
@@ -130,7 +134,8 @@ class GreenHouseDriver:
             )
             if end_date_elem:
                 end_date_elem.send_keys(
-                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER).perform()
+                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER
+                ).perform()
         except:
             pass
 
@@ -139,9 +144,9 @@ class GreenHouseDriver:
         try:
             self.driver.find_element(
                 By.XPATH,
-                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'github')]"
+                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'github')]",
             ).send_keys(
-                'github.com/johnsmith'  # self.github
+                "github.com/johnsmith"  # self.github
             )
         except:
             pass
@@ -150,9 +155,9 @@ class GreenHouseDriver:
         try:
             self.driver.find_element(
                 By.XPATH,
-                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'linkedin')]"
+                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'linkedin')]",
             ).send_keys(
-                'linkedin.com/in/johnsmith'  # self.linkedin
+                "linkedin.com/in/johnsmith"  # self.linkedin
             )
         except:
             pass
@@ -161,8 +166,9 @@ class GreenHouseDriver:
         try:
             gpa_elem = self.driver.find_element(
                 By.XPATH,
-                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'gpa')]").send_keys(
-                '4.0'  # self.gpa
+                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'gpa')]",
+            ).send_keys(
+                "4.0"  # self.gpa
             )
         except:
             pass
@@ -189,7 +195,7 @@ class GreenHouseDriver:
             actions.click(on_element=sponsor_elem).send_keys(
                 Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
             ).send_keys(Keys.ENTER).perform()
-            
+
             time.wait(2)
         except:
             pass
@@ -210,7 +216,8 @@ class GreenHouseDriver:
         # how'd you hear about us?
         try:
             how_hear_about_elem = self.driver.find_element(
-                By.XPATH, "//label[contains(.,'hear about us')]")
+                By.XPATH, "//label[contains(.,'hear about us')]"
+            )
             actions.click(on_element=how_hear_about_elem).send_keys(
                 Keys.ARROW_DOWN,
             ).send_keys(Keys.ENTER).perform()
@@ -220,9 +227,11 @@ class GreenHouseDriver:
         # relocation office
         try:
             relocate_elem = self.driver.find_element(
-                By.XPATH, "//label[contains(.,'office')]")
+                By.XPATH, "//label[contains(.,'office')]"
+            )
             actions.click(on_element=relocate_elem).send_keys(
-                Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+                Keys.ARROW_DOWN,
+                Keys.ARROW_DOWN,
             ).send_keys(Keys.ENTER).perform()
         except:
             pass
@@ -230,9 +239,11 @@ class GreenHouseDriver:
         # agree to privacy policy
         try:
             privacy_elem = self.driver.find_element(
-                By.XPATH, "//label[contains(.,'Privacy')]")
+                By.XPATH, "//label[contains(.,'Privacy')]"
+            )
             actions.click(on_element=privacy_elem).send_keys(
-                Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+                Keys.ARROW_DOWN,
+                Keys.ARROW_DOWN,
             ).send_keys(Keys.ENTER).perform()
         except:
             pass
@@ -241,37 +252,38 @@ class GreenHouseDriver:
         actions = ActionChains(self.driver)
 
         # # Fill in the basic information fields
-        #self.fill_basic_fields(url)
+        # self.fill_basic_fields(url)
 
         # Upload Resume
         try:
-            resume_fieldset = self.driver.find_element(
-                By.ID, 'resume_fieldset')
+            resume_fieldset = self.driver.find_element(By.ID, "resume_fieldset")
             if resume_fieldset:
-                resume_fieldset.find_element(By.XPATH, '//input[@type="file"]').send_keys(
+                resume_fieldset.find_element(
+                    By.XPATH, '//input[@type="file"]'
+                ).send_keys(
                     # "/Users/jennycai/Desktop/applyeverywhere/src/resumes/" + self.id + ".pdf"
-                    '/Users/jennycai/Desktop/applyeverywhere/src/resumes/resume.pdf'
+                    "/Users/jennycai/Desktop/applyeverywhere/src/resumes/resume.pdf"
                 )  # for now we'll have to just change the path every time
                 #   for whoever is running this code on their laptop since we don't have the same path
                 time.sleep(1)
         except NoSuchElementException:
-            print(f'Did not upload resume for {url}')
+            print(f"Did not upload resume for {url}")
             pass
 
         # Fill autocomplete fields
-        #self.fill_autocomplete_fields(url)
-        #self.fill_education_fields(url)
-        #self.fill_short_answers(url)
+        # self.fill_autocomplete_fields(url)
+        # self.fill_education_fields(url)
+        # self.fill_short_answers(url)
 
         # for answering drop down questions
-        #self.fill_auth_sponsorship_questions(url)
-        #self.fill_dropdowns(url)
+        # self.fill_auth_sponsorship_questions(url)
+        # self.fill_dropdowns(url)
 
         time.sleep(5)
 
         # find the submit button at the end
-        #submit_button = self.driver.find_element(By.ID, "submit_app")
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        # submit_button = self.driver.find_element(By.ID, "submit_app")
+        self.driver.execute_script("window.scrollTo(0, document.body.height);")
 
         print(f"finished {url}")
 

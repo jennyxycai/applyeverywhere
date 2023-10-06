@@ -1,4 +1,5 @@
 import requests
+import os
 
 # Replace with your Airtable API information
 base_id = "appxBfSaIMlRGrhBZ"
@@ -45,7 +46,11 @@ class Profile:  # make Profile class
         self.cover_letter = fields["Cover Letter"]
 
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
-        open("resumes/" + self.id + ".pdf", "wb").write(r.content)
+        #print(r.content)
+        with open(os.path.abspath(os.curdir)+"/src/resumes/" + self.id + ".pdf", "wb") as pdf_file:
+            pdf_file.write(response.content)
+        
+        #open("resumes/" + self.id + ".pdf", "wb").write(r.content)
         self.resume = "resumes/" + self.id + ".pdf"  # link to resume
 
     def __str__(self):

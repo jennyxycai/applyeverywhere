@@ -7,7 +7,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from profile_info import Profile
-from profile_info import list_of_profiles
+
+# from profile_info import list_of_profiles
 import requests
 import os
 
@@ -37,114 +38,123 @@ class GreenHouseDriver:
     def fill_application_fields(self):
         actions = ActionChains(self.driver)
 
-        # Fill in the basic information fields
-        try:
-            self.driver.find_element(By.ID, "first_name").send_keys(self.first_name)
-        except:
-            pass
+        # # Fill in the basic information fields
+        # try:
+        #     self.driver.find_element(By.ID, "first_name").send_keys(self.first_name)
+        # except:
+        #     pass
 
-        try:
-            self.driver.find_element(By.ID, "last_name").send_keys(self.last_name)
-        except:
-            pass
-        try:
-            self.driver.find_element(By.ID, "email").send_keys(self.email)
-        except:
-            pass
-        try:
-            self.driver.find_element(By.ID, "phone").send_keys(self.phone_number)
-        except:
-            pass
+        # try:
+        #     self.driver.find_element(By.ID, "last_name").send_keys(self.last_name)
+        # except:
+        #     pass
+        # try:
+        #     self.driver.find_element(By.ID, "email").send_keys(self.email)
+        # except:
+        #     pass
+        # try:
+        #     self.driver.find_element(By.ID, "phone").send_keys(self.phone_number)
+        # except:
+        #     pass
 
         # add Location -- TODO: EDIT
         try:
             locate_me_button = self.driver.find_element(
-                By.XPATH, "//a[contains(.,'Locate me')]"
+                By.ID, "job_application_location"
             )
-            self.driver.move_to_element(locate_me_button)
-            self.driver.click(locate_me_button)
+
+            actions.click(on_element=locate_me_button).send_keys(
+                "Cambridge, MA"
+            ).send_keys(Keys.ARROW_DOWN, Keys.ENTER).perform()
+            print("1")
+
+            # self.driver.(locate_me_button)
+            # self.driver.click(locate_me_button)
             time.sleep(2)
         except:
+            print("2")
             pass
 
         # Upload Resume
-        try:
-            self.driver.find_element(By.XPATH, '//input[@type="file"]').send_keys(
-                "/Users/rona/Documents/GitHub/applyeverywhere-1/src/resumes/"
-                + self.id
-                + ".pdf"
-            )  # for now we'll have to just change the path every time
-            #   for whoever is running this code on their laptop since we don't have the same path
-            time.sleep(5)
-        except NoSuchElementException:
-            pass
+        # try:
+        #     self.driver.find_element(By.XPATH, '//input[@type="file"]').send_keys(
+        #         "/Users/rona/Documents/GitHub/applyeverywhere-1/src/resumes/"
+        #         + self.id
+        #         + ".pdf"
+        #     )  # for now we'll have to just change the path every time
+        #     #   for whoever is running this code on their laptop since we don't have the same path
+        #     time.sleep(5)
+        # except NoSuchElementException:
+        #     pass
 
-        try:
-            self.driver.find_element(
-                By.XPATH, "//label[contains(.,'GitHub')]"
-            ).send_keys(self.github)
-        except NoSuchElementException:
-            try:
-                self.driver.find_element(
-                    By.XPATH, "//label[contains(.,'Github')]"
-                ).send_keys(self.github)
-            except:
-                pass
+        # try:
+        #     self.driver.find_element(
+        #         By.XPATH, "//label[contains(.,'GitHub')]"
+        #     ).send_keys(self.github)
+        # except NoSuchElementException:
+        #     try:
+        #         self.driver.find_element(
+        #             By.XPATH, "//label[contains(.,'Github')]"
+        #         ).send_keys(self.github)
+        #     except:
+        #         pass
 
-        try:
-            self.driver.find_element(
-                By.XPATH, "//label[contains(.,'LinkedIn')]"
-            ).send_keys(self.linkedin)
-        except NoSuchElementException:
-            pass  # skip
+        # try:
+        #     self.driver.find_element(
+        #         By.XPATH, "//label[contains(.,'LinkedIn')]"
+        #     ).send_keys(self.linkedin)
+        # except NoSuchElementException:
+        #     pass  # skip
 
         # for answering drop down questions
-        try:
-            auth_elem = self.driver.find_element(
-                By.XPATH, "//label[contains(.,'authorization')]"
-            )
-            if self.current_auth:
-                actions.click(on_element=auth_elem).send_keys(
-                    Keys.ARROW_DOWN, Keys.ARROW_DOWN
-                ).send_keys(Keys.ENTER).perform()
-            else:  # not authorized
-                actions.click(on_element=auth_elem).send_keys(
-                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
-                ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
-        except:
-            pass  # while True: print("auth selection failing")
+        # try:
+        #     auth_elem = self.driver.find_element(
+        #         By.XPATH, "//label[contains(.,'authorization')]"
+        #     )
+        #     if self.current_auth:
+        #         actions.click(on_element=auth_elem).send_keys(
+        #              Keys.ARROW_DOWN
+        #         ).send_keys(Keys.ENTER).perform()
+        #     else:  # not authorized
+        #         actions.click(on_element=auth_elem).send_keys(
+        #              Keys.ARROW_DOWN, Keys.ARROW_DOWN
+        #         ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        # except:
+        #     pass  # while True: print("auth selection failing")
 
-        try:
-            if self.visa_sponsor:
-                sponsor_elem = self.driver.find_element(
-                    By.XPATH, "//label[contains(.,'sponsorship')]"
-                )
-                actions.click(on_element=sponsor_elem).send_keys(
-                    Keys.ARROW_DOWN, Keys.ARROW_DOWN
-                ).send_keys(Keys.ENTER).perform()
-            else:  # does not require visa sponsorship
-                actions.click(on_element=sponsor_elem).send_keys(
-                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
-                ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
-        except:
-            pass  # while True: print("sponsor selection failing")
+        # try:
+        #     if self.visa_sponsor:
+        #         sponsor_elem = self.driver.find_element(
+        #             By.XPATH, "//label[contains(.,'sponsorship')]"
+        #         )
+        #         actions.click(on_element=sponsor_elem).send_keys(
+        #             Keys.ARROW_DOWN, Keys.ARROW_DOWN
+        #         ).send_keys(Keys.ENTER).perform()
+        #     else:  # does not require visa sponsorship
+        #         actions.click(on_element=sponsor_elem).send_keys(
+        #             Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
+        #         ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        # except:
+        #     pass  # while True: print("sponsor selection failing")
 
-        self.submit_application()
+        # self.submit_application()
         time.sleep(10)
 
-        print("finished!")
+        print("finished")
 
     def submit_application(self):
         # Submit the application form
         self.driver.find_element(By.ID, "submit_app").click()
         # Close the browser
-        self.driver.quit()
+        # self.driver.quit()
 
 
-for profile in list_of_profiles:
-    gd = GreenHouseDriver(profile)
+# for profile in list_of_profiles:
+# gd = GreenHouseDriver(profile)
+gd = GreenHouseDriver()
 
-    for app_url in APPLICATION_URLS:
-        gd.open_application_url(app_url)
-        gd.fill_application_fields()
-    # gd.submit_application()
+for app_url in APPLICATION_URLS:
+    gd.open_application_url(app_url)
+    gd.fill_application_fields()
+    gd.submit_application()
+# gd.submit_application()

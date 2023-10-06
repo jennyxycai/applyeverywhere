@@ -173,5 +173,5 @@ gd = GreenHouseDriver()
 for app_url in APPLICATION_URLS:
     gd.open_application_url(app_url)
     gd.fill_application_fields()
-    gd.submit_application()
+    #gd.submit_application()
 # gd.submit_application()

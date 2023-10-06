@@ -26,7 +26,7 @@ class Profile:  # make Profile class
         self.last_name = fields["Last Name"]
         self.phone_number = fields["Phone Number"]
         self.email = fields["Email"]
-        self.organization = fields["Organization"]
+        self.organization = fields["School"]
         self.linkedin = fields["LinkedIn Profile"]
         self.graduation_date = fields[
             "Graduation Date"
@@ -42,10 +42,10 @@ class Profile:  # make Profile class
         ]
 
         self.cover_letter = fields["Cover Letter"]
-        
+
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
-        open("src/resumes/" + self.id + ".pdf", "wb").write(r.content)
-        self.resume = "src/resumes/" + self.id + ".pdf"  # link to resume
+        open("resumes/" + self.id + ".pdf", "wb").write(r.content)
+        self.resume = "resumes/" + self.id + ".pdf"  # link to resume
 
     def __str__(self):
         attributes = []

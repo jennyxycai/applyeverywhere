@@ -241,7 +241,7 @@ class GreenHouseDriver:
         actions = ActionChains(self.driver)
 
         # # Fill in the basic information fields
-        #self.fill_basic_fields(url)
+        self.fill_basic_fields(url)
 
         # Upload Resume
         try:
@@ -250,7 +250,7 @@ class GreenHouseDriver:
             if resume_fieldset:
                 resume_fieldset.find_element(By.XPATH, '//input[@type="file"]').send_keys(
                     # "/Users/jennycai/Desktop/applyeverywhere/src/resumes/" + self.id + ".pdf"
-                    '/Users/jennycai/Desktop/applyeverywhere/src/resumes/resume.pdf'
+                    '/Users/yimingchen/Desktop/applyeverywhere/applyeverywhere/src/resumes/resume.pdf'
                 )  # for now we'll have to just change the path every time
                 #   for whoever is running this code on their laptop since we don't have the same path
                 time.sleep(1)
@@ -259,20 +259,21 @@ class GreenHouseDriver:
             pass
 
         # Fill autocomplete fields
-        #self.fill_autocomplete_fields(url)
-        #self.fill_education_fields(url)
-        #self.fill_short_answers(url)
+        self.fill_autocomplete_fields(url)
+        self.fill_education_fields(url)
+        self.fill_short_answers(url)
 
         # for answering drop down questions
-        #self.fill_auth_sponsorship_questions(url)
-        #self.fill_dropdowns(url)
+        self.fill_auth_sponsorship_questions(url)
+        self.fill_dropdowns(url)
 
-        time.sleep(5)
-
+        #time.sleep(5)
         # find the submit button at the end
-        #submit_button = self.driver.find_element(By.ID, "submit_app")
+        submit_button = self.driver.find_element(By.ID, "submit_app")
+        actions = ActionChains(self.driver)
+        actions.move_to_element(submit_button).perform()
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
+        time.sleep(5)
         print(f"finished {url}")
 
     def submit_application(self):

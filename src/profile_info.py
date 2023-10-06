@@ -42,9 +42,10 @@ class Profile:  # make Profile class
         ]
 
         self.cover_letter = fields["Cover Letter"]
+        
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
-        open("resumes/" + self.id + ".pdf", "wb").write(r.content)
-        self.resume = "resumes/" + self.id + ".pdf"  # link to resume
+        open("src/resumes/" + self.id + ".pdf", "wb").write(r.content)
+        self.resume = "src/resumes/" + self.id + ".pdf"  # link to resume
 
     def __str__(self):
         attributes = []

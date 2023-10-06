@@ -3,21 +3,23 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from profile_info import Profile
-from selenium.webdriver.common.action_chains import ActionChains
-from profile_info import list_of_profiles
+from selenium.common.exceptions import NoSuchElementException
+import time
+#from profile_info import Profile
+
 import os
 
 APPLICATION_URLS = [
-    "https://boards.greenhouse.io/sentry/jobs/5193895",
-    "https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
+    'https://boards.greenhouse.io/sentry/jobs/5193895',
+    'https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005',
 ]
 
-
 class GreenHouseDriver:
-    def __init__(self, profile: Profile):
-        for info, value in profile.__dict__.items():
-            setattr(self, info, value)
+
+    def __init__(self, profile = None):
+        if profile:
+            for info, value in profile.__dict__.items():
+                setattr(self, info, value)
 
         # Set up the driver (assuming you're using Chrome, but you can use others like Firefox)
         # make sure your selenium version is at least 4.6.0. use `pip3 install selenium`
@@ -31,99 +33,64 @@ class GreenHouseDriver:
         WebDriverWait(self.driver, timeout)  # Adjust the timeout as needed
 
     def fill_application_fields(self):
-        actions = ActionChains(self.driver)
-        # Fill in the information fields
-        # rona says: filled in the attributes for Sentry but this is not going to work for the other apps
-        self.driver.find_element(By.ID, "first_name").send_keys(self.first_name)
-        self.driver.find_element(By.ID, "last_name").send_keys(self.last_name)
-        self.driver.find_element(By.ID, "email").send_keys(self.email)
-        self.driver.find_element(By.ID, "phone").send_keys(self.phone_number)
-        # self.driver.find_element(By.ID, "job_application_location").send_keys(
-        #   self.location
-        # )
-        self.driver.find_element(
-            By.ID, "job_application_answers_attributes_0_text_value"
-        ).send_keys(
-            self.linkedin
-        )  # for linkedin
+        id_fields = {'first_name': ['first_name'], 'last_name': [], 'email': [], 'phone': [], 'location_autocomplete_label': [], \
+                     'cover_letter': []}
 
-        self.driver.find_element(
-            By.ID, "job_application_answers_attributes_2_text_value"
-        ).send_keys(
-            self.github
-        )  # for github
+        # Fill in the basic information fields
+        self.driver.find_element(By.ID, 'first_name').send_keys('John')
+        self.driver.find_element(By.ID, 'last_name').send_keys('Smith')
+        self.driver.find_element(By.ID, 'email').send_keys('johnsmith@uni.edu')
 
-        self.driver.find_element(By.CLASS_NAME, "drop-zone").send_keys(
-            "/resume" + self.id + ".pdf"
-        )
-        # self.driver.find_element(By.ID, "job_application_answers_attributes_3_boolean_value").contextClick("Yes" if self.current_auth else "No")  # for current authorization in the US
+        # add location
+        try:
+            locate_me_button = self.driver.find_element(By.XPATH, "//a[contains(.,'Locate me')]")
+            self.driver.move_to_element(locate_me_button)
+            self.driver.click(locate_me_button)
+            time.sleep(2)
+        except:
+            pass
+        
+        try:
+            self.driver.find_element(By.XPATH, "//label[contains(.,'GitHub')]").send_keys('linkedin.com/in/johnsmith')
+        except NoSuchElementException:
+            pass # skip
 
-        # for answering drop down question
+        try:
+            self.driver.find_element(By.XPATH, "//label[contains(.,'LinkedIn')]").send_keys('linkedin.com/in/johnsmith')
+        except NoSuchElementException:
+            pass # skip
 
-        if self.current_auth:
-            elementLocator = self.driver.find_element(
-                By.ID, "s2id_job_application_answers_attributes_3_boolean_value"
-            )
-            actions.click(on_element=elementLocator).send_keys(
-                Keys.ARROW_DOWN
-            ).send_keys(Keys.ENTER).perform()
-        else:  # not authorized
-            elementLocator = self.driver.find_element(
-                By.ID, "s2id_job_application_answers_attributes_3_boolean_value"
-            )
-            actions.click(on_element=elementLocator).send_keys(
-                Keys.ARROW_DOWN
-            ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        # submit resume last so it doesn't auto-fill the rest of the form
+        #self.driver.find_element_by_name('resume').send_keys(os.getcwd()+"/resume.pdf")
 
-        if self.visa_sponsor:
-            elementLocator = self.driver.find_element(
-                By.ID, "s2id_job_application_answers_attributes_4_boolean_value"
-            )
-            actions.click(on_element=elementLocator).send_keys(
-                Keys.ARROW_DOWN
-            ).send_keys(Keys.ENTER).perform()
-        else:  # does not require visa sponsorship
-            elementLocator = self.driver.find_element(
-                By.ID, "s2id_job_application_answers_attributes_4_boolean_value"
-            )
-            actions.click(on_element=elementLocator).send_keys(
-                Keys.ARROW_DOWN
-            ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
-
-        # can you relocate to SF?
-        elementLocator = self.driver.find_element(
-            By.ID,
-            "s2id_job_application_answers_attributes_6_boolean_value",
-        )
-        actions.click(on_element=elementLocator).send_keys(Keys.ARROW_DOWN).send_keys(
-            Keys.ENTER
-        ).perform()
-
-        # accept the Sentry privacy policy
-        elementLocator = self.driver.find_element(
-            By.ID,
-            "s2id_job_application_answers_attributes_7_answer_selected_options_attributes_7_question_option_id",
-        )
-        actions.click(on_element=elementLocator).send_keys(Keys.ARROW_DOWN).send_keys(
-            Keys.ENTER
-        ).perform()
-
-        while True:
+        # Upload Resume
+        try:
+            self.driver.find_element(By.XPATH, '//input[@type="file"]').send_keys('/Users/jennycai/Desktop/applyeverywhere/src/resume.pdf')
+            time.sleep(5)
+            # resume_element = driver.find_element_by_xpath('//input[@type="file"]')
+            # resume_action = ActionChains(driver)
+            # resume_action.move_to_element(resume_element)
+            # resume_action.send_keys(os.getcwd() + JOB_APP['resume'])
+            # resume_action.perform()
+            # print('hello')
+            # time.sleep(5)
+        except NoSuchElementException:
             pass
 
+        time.sleep(10)
+        print('finished!')        
+
     def submit_application(self):
-        # Submit the application form
-        self.driver.find_element(By.ID, "submit_button_id").click()
+         # Submit the application form
+        self.driver.find_element(By.ID, 'submit_button_id').click()
         # Close the browser
         self.driver.quit()
 
-
 # dummy profile
-# profile = Profile(   {"first_name": "John", "last_name": "Smith", "email": "johnsmith@uni.edu"})
+#profile = Profile({'first_name': 'John', 'last_name': 'Smith', 'email': 'johnsmith@uni.edu'})
 
-for profile in list_of_profiles:
-    gd = GreenHouseDriver(profile)
+gd = GreenHouseDriver()
 
-    for app_url in APPLICATION_URLS:
-        gd.open_application_url(app_url)
-        gd.fill_application_fields()
+for app_url in APPLICATION_URLS:
+    gd.open_application_url(app_url)
+    gd.fill_application_fields()

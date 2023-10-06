@@ -13,8 +13,8 @@ import requests
 import os
 
 APPLICATION_URLS = [
-    "https://boards.greenhouse.io/sentry/jobs/5193895",
     "https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
+    "https://boards.greenhouse.io/sentry/jobs/5193895",
 ]
 
 
@@ -87,6 +87,23 @@ class GreenHouseDriver:
         # except NoSuchElementException:
         #     pass
 
+        try:
+            # school_elem = self.driver.find_element(
+            #     By.XPATH, "//label[contains(.,'School')]"
+            # )
+            school_elem = self.driver.find_element(
+                By.ID, "s2id_education_school_name_0"
+            )
+            actions.click(on_element=school_elem).send_keys(
+                "Massachusetts Institute of Technology"
+            ).perform()
+            time.sleep(5)  # give the school search time
+            actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER).perform()
+            print("4")
+
+        except NoSuchElementException:
+            print("3")
+            pass
         # try:
         #     self.driver.find_element(
         #         By.XPATH, "//label[contains(.,'GitHub')]"

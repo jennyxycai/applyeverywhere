@@ -7,6 +7,7 @@ api_key = (
     "patGVfkDXNA8c54m9.2cbd2d736cdfcfa3c2c73aee4ed6761f2085916f908d3f803213cdcf58a62a7e"
 )
 
+
 # Define the Airtable API endpoint URL
 url = f"https://api.airtable.com/v0/{base_id}/{table_name}"
 
@@ -55,8 +56,8 @@ class Profile:  # make Profile class
 
 
 response = requests.get(url, headers=headers)
-if requests.exceptions.ConnectionError:
-    response.status_code = "Connection refused"
+# if requests.exceptions.ConnectionError:
+#     response.status_code = "Connection refused"
 
 if response.status_code == 200:
     data = response.json()

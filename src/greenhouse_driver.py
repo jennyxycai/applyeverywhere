@@ -208,7 +208,7 @@ class GreenHouseDriver:
 
         # for answering drop down questions
         self.fill_auth_sponsorship_questions(url)
-        
+
         time.sleep(5)
 
         print(f"finished {url}")

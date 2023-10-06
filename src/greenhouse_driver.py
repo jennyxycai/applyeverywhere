@@ -10,10 +10,9 @@ import time
 # from profile_info import list_of_profiles
 
 APPLICATION_URLS = [
-    "https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
-    #"https://boards.greenhouse.io/sentry/jobs/5193895",
+    #"https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
+    "https://boards.greenhouse.io/sentry/jobs/5193895",
 ]
-
 
 class GreenHouseDriver:
     def __init__(self, profile=None):
@@ -242,7 +241,7 @@ class GreenHouseDriver:
         actions = ActionChains(self.driver)
 
         # # Fill in the basic information fields
-        self.fill_basic_fields(url)
+        #self.fill_basic_fields(url)
 
         # Upload Resume
         try:
@@ -260,23 +259,25 @@ class GreenHouseDriver:
             pass
 
         # Fill autocomplete fields
-        self.fill_autocomplete_fields(url)
-        self.fill_education_fields(url)
-        self.fill_short_answers(url)
+        #self.fill_autocomplete_fields(url)
+        #self.fill_education_fields(url)
+        #self.fill_short_answers(url)
 
         # for answering drop down questions
-        self.fill_auth_sponsorship_questions(url)
-        self.fill_dropdowns(url)
+        #self.fill_auth_sponsorship_questions(url)
+        #self.fill_dropdowns(url)
 
         time.sleep(5)
+
+        # find the submit button at the end
+        #submit_button = self.driver.find_element(By.ID, "submit_app")
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
         print(f"finished {url}")
 
     def submit_application(self):
         # Submit the application form
         self.driver.find_element(By.ID, "submit_app").click()
-        # Close the browser
-        # self.driver.quit()
 
 
 # for profile in list_of_profiles:

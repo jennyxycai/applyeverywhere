@@ -11,7 +11,7 @@ import time
 
 APPLICATION_URLS = [
     "https://boards.greenhouse.io/appliedintuition/jobs/4296158005?gh_jid=4296158005",
-    "https://boards.greenhouse.io/sentry/jobs/5193895",
+    #"https://boards.greenhouse.io/sentry/jobs/5193895",
 ]
 
 
@@ -86,7 +86,7 @@ class GreenHouseDriver:
             actions.click(on_element=school_elem).send_keys(
                 "Massachusetts Institute of Technology"  # self.organization
             ).perform()
-            time.sleep(2)  # give the school search time
+            time.sleep(1)  # give the school search time
             actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN,
                               Keys.ENTER).perform()
         except NoSuchElementException:
@@ -104,7 +104,7 @@ class GreenHouseDriver:
             actions.click(on_element=degree_elem).send_keys(
                 "Bachelor"  # self.expertise
             ).perform()
-            time.sleep(2)  # give the degree search time
+            time.sleep(1)  # give the degree search time
             actions.send_keys(Keys.ARROW_DOWN, Keys.ARROW_DOWN,
                               Keys.ENTER).perform()
         except:
@@ -135,7 +135,8 @@ class GreenHouseDriver:
         except:
             pass
 
-    def fill_links(self, url):
+    def fill_short_answers(self, url):
+        # github
         try:
             self.driver.find_element(
                 By.XPATH,
@@ -146,12 +147,23 @@ class GreenHouseDriver:
         except:
             pass
 
+        # linkedin
         try:
             self.driver.find_element(
                 By.XPATH,
                 "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'linkedin')]"
             ).send_keys(
                 'linkedin.com/in/johnsmith'  # self.linkedin
+            )
+        except:
+            pass
+
+        # fill GPA
+        try:
+            gpa_elem = self.driver.find_element(
+                By.XPATH,
+                "//label[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'gpa')]").send_keys(
+                '4.0'  # self.gpa
             )
         except:
             pass
@@ -166,6 +178,20 @@ class GreenHouseDriver:
             actions.click(on_element=sponsor_elem).send_keys(
                 Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
             ).send_keys(Keys.ENTER).perform()
+            time.wait(2)
+        except:
+            pass
+
+        # hardcode sponsorship question if dropdown is hidden element
+        try:
+            sponsor_elem = self.driver.find_element(
+                By.XPATH, "//label[contains(.,'sponsorship')]"
+            )
+            actions.click(on_element=sponsor_elem).send_keys(
+                Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
+            ).send_keys(Keys.ENTER).perform()
+            
+            time.wait(2)
         except:
             pass
 
@@ -177,6 +203,38 @@ class GreenHouseDriver:
             actions.click(on_element=auth_elem).send_keys(
                 Keys.ARROW_DOWN, Keys.ARROW_DOWN
             ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        except:
+            pass
+
+    def fill_dropdowns(self, url):
+        actions = ActionChains(self.driver)
+        # how'd you hear about us?
+        try:
+            how_hear_about_elem = self.driver.find_element(
+                By.XPATH, "//label[contains(.,'hear about us')]")
+            actions.click(on_element=how_hear_about_elem).send_keys(
+                Keys.ARROW_DOWN,
+            ).send_keys(Keys.ENTER).perform()
+        except:
+            pass
+
+        # relocation office
+        try:
+            relocate_elem = self.driver.find_element(
+                By.XPATH, "//label[contains(.,'office')]")
+            actions.click(on_element=relocate_elem).send_keys(
+                Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+            ).send_keys(Keys.ENTER).perform()
+        except:
+            pass
+
+        # agree to privacy policy
+        try:
+            privacy_elem = self.driver.find_element(
+                By.XPATH, "//label[contains(.,'Privacy')]")
+            actions.click(on_element=privacy_elem).send_keys(
+                Keys.ARROW_DOWN, Keys.ARROW_DOWN,
+            ).send_keys(Keys.ENTER).perform()
         except:
             pass
 
@@ -204,10 +262,11 @@ class GreenHouseDriver:
         # Fill autocomplete fields
         self.fill_autocomplete_fields(url)
         self.fill_education_fields(url)
-        self.fill_links(url)
+        self.fill_short_answers(url)
 
         # for answering drop down questions
         self.fill_auth_sponsorship_questions(url)
+        self.fill_dropdowns(url)
 
         time.sleep(5)
 

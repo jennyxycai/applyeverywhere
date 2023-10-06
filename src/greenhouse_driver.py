@@ -4,9 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 import time
-#from profile_info import Profile
-
+from profile_info import Profile
+import requests
 import os
 
 APPLICATION_URLS = [
@@ -33,15 +34,28 @@ class GreenHouseDriver:
         WebDriverWait(self.driver, timeout)  # Adjust the timeout as needed
 
     def fill_application_fields(self):
-        id_fields = {'first_name': ['first_name'], 'last_name': [], 'email': [], 'phone': [], 'location_autocomplete_label': [], \
-                     'cover_letter': []}
+        actions = ActionChains(self.driver)
 
         # Fill in the basic information fields
-        self.driver.find_element(By.ID, 'first_name').send_keys('John')
-        self.driver.find_element(By.ID, 'last_name').send_keys('Smith')
-        self.driver.find_element(By.ID, 'email').send_keys('johnsmith@uni.edu')
+        try:
+            self.driver.find_element(By.ID, 'first_name').send_keys('John')
+        except:
+            pass
 
-        # add location
+        try:
+            self.driver.find_element(By.ID, 'last_name').send_keys('Smith')
+        except:
+            pass
+        try:
+            self.driver.find_element(By.ID, 'email').send_keys('johnsmith@uni.edu')
+        except:
+            pass
+        try:
+            self.driver.find_element(By.ID, 'phone').send_keys('555555555')
+        except:
+            pass
+
+        # add Location -- TODO: EDIT
         try:
             locate_me_button = self.driver.find_element(By.XPATH, "//a[contains(.,'Locate me')]")
             self.driver.move_to_element(locate_me_button)
@@ -49,33 +63,53 @@ class GreenHouseDriver:
             time.sleep(2)
         except:
             pass
+
+        # Upload Resume
+        try:
+            self.driver.find_element(By.XPATH, '//input[@type="file"]').send_keys('/Users/jennycai/Desktop/applyeverywhere/src/resume.pdf')
+            time.sleep(5)
+        except NoSuchElementException:
+            pass
         
         try:
-            self.driver.find_element(By.XPATH, "//label[contains(.,'GitHub')]").send_keys('linkedin.com/in/johnsmith')
+            self.driver.find_element(By.XPATH, "//label[contains(.,'GitHub')]").send_keys('github.com/johnsmith')
         except NoSuchElementException:
-            pass # skip
+            try:
+                self.driver.find_element(By.XPATH, "//label[contains(.,'Github')]").send_keys('github.com/johnsmith')
+            except:
+                pass
 
         try:
             self.driver.find_element(By.XPATH, "//label[contains(.,'LinkedIn')]").send_keys('linkedin.com/in/johnsmith')
         except NoSuchElementException:
             pass # skip
 
-        # submit resume last so it doesn't auto-fill the rest of the form
-        #self.driver.find_element_by_name('resume').send_keys(os.getcwd()+"/resume.pdf")
-
-        # Upload Resume
+        # for answering drop down questions
         try:
-            self.driver.find_element(By.XPATH, '//input[@type="file"]').send_keys('/Users/jennycai/Desktop/applyeverywhere/src/resume.pdf')
-            time.sleep(5)
-            # resume_element = driver.find_element_by_xpath('//input[@type="file"]')
-            # resume_action = ActionChains(driver)
-            # resume_action.move_to_element(resume_element)
-            # resume_action.send_keys(os.getcwd() + JOB_APP['resume'])
-            # resume_action.perform()
-            # print('hello')
-            # time.sleep(5)
-        except NoSuchElementException:
-            pass
+            auth_elem = self.driver.find_element(By.XPATH, "//label[contains(.,'authorization')]")
+            if True:
+                actions.click(on_element=auth_elem).send_keys(
+                    Keys.ARROW_DOWN, Keys.ARROW_DOWN
+                ).send_keys(Keys.ENTER).perform()
+            else:  # not authorized
+                actions.click(on_element=auth_elem).send_keys(
+                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
+                ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        except:
+            pass # while True: print("auth selection failing")
+        
+        try:
+            if True:
+                sponsor_elem = self.driver.find_element(By.XPATH, "//label[contains(.,'sponsorship')]")
+                actions.click(on_element=sponsor_elem).send_keys(
+                    Keys.ARROW_DOWN, Keys.ARROW_DOWN
+                ).send_keys(Keys.ENTER).perform()
+            else:  # does not require visa sponsorship
+                actions.click(on_element=sponsor_elem).send_keys(
+                    Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN
+                ).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        except:
+            pass # while True: print("sponsor selection failing")
 
         time.sleep(10)
         print('finished!')        
@@ -86,8 +120,6 @@ class GreenHouseDriver:
         # Close the browser
         self.driver.quit()
 
-# dummy profile
-#profile = Profile({'first_name': 'John', 'last_name': 'Smith', 'email': 'johnsmith@uni.edu'})
 
 gd = GreenHouseDriver()
 

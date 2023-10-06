@@ -129,12 +129,14 @@ class GreenHouseDriver:
         except:
             pass  # while True: print("sponsor selection failing")
 
+        self.submit_application()
         time.sleep(10)
+
         print("finished!")
 
     def submit_application(self):
         # Submit the application form
-        self.driver.find_element(By.ID, "submit_button_id").click()
+        self.driver.find_element(By.ID, "submit_app").click()
         # Close the browser
         self.driver.quit()
 
@@ -145,4 +147,4 @@ for profile in list_of_profiles:
     for app_url in APPLICATION_URLS:
         gd.open_application_url(app_url)
         gd.fill_application_fields()
-        gd.submit_application()
+    # gd.submit_application()

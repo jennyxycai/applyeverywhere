@@ -55,6 +55,9 @@ class Profile:  # make Profile class
 
 
 response = requests.get(url, headers=headers)
+if requests.exceptions.ConnectionError:
+    response.status_code = "Connection refused"
+
 if response.status_code == 200:
     data = response.json()
     # Process and work with the retrieved data here

@@ -49,7 +49,7 @@ class Profile:  # make Profile class
         r = requests.get(fields["Resume"][0]["url"], allow_redirects=True)
         # print(r.content)
         with open(
-            os.path.abspath(os.curdir) + "/resumes/" + self.id + ".pdf", "wb"
+            os.path.abspath(os.curdir) + "/src/resumes/" + self.id + ".pdf", "wb"
         ) as pdf_file:
             pdf_file.write(response.content)
 

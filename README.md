@@ -1,7 +1,7 @@
 # applyeverywhere
 Mass-apply to jobs with 1 click. Landing page [here](https://apply.framer.ai/).
 
-Fill in profile information in this [AirTable Form](https://airtable.com/appxBfSaIMlRGrhBZ/shrKZJo7AFJILs6yC). Running `greenhouse_driver.py`, which opens up a bot that opens up scrapped application links on Chrome, and populates the appropriate fields with your profile info. Users can choose to review their information before submitting or to auto-submit en masse.
+Fill in profile information in this [AirTable Form](https://airtable.com/appxBfSaIMlRGrhBZ/shrKZJo7AFJILs6yC). Run `greenhouse_driver.py`, which opens up a bot that opens up scrapped application links on Google Chrome, and populates the appropriate fields with your profile info. Users can choose to review information before submitting or to auto-submit en masse.
 
 ## [MVP Demo]
 

@@ -9,3 +9,6 @@ Fill in profile information in this [AirTable Form](https://airtable.com/appxBfS
 
 
 YT Link [here](https://youtu.be/4i4Ofr8wTeI?si=hC63DsmAfDsARQQo)
+
+
+Made with ☕ and 😊 by Rona Wang, Yiming Chen, Jenny Cai
